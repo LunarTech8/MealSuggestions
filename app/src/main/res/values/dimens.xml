@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Specific margins: -->
+    <dimen name="availability_recycler_height">200dp</dimen>
+    <dimen name="settings_row_height">40dp</dimen>
+    <dimen name="ingredients_label_height">30dp</dimen>
+    <dimen name="weight_field_min_width">125dp</dimen>
+    <dimen name="user_mode_button_width">120dp</dimen>
+    <dimen name="available_button_size">40dp</dimen>
+    <dimen name="empty_button_width">60dp</dimen>
+    <dimen name="empty_button_height">40dp</dimen>
+
+    <!-- General margins: -->
+    <dimen name="input_field_width_large">200dp</dimen>
+    <dimen name="input_field_width_medium">150dp</dimen>
+    <dimen name="input_field_width_small">100dp</dimen>
+    <dimen name="label_width_medium">65dp</dimen>
+    <dimen name="label_width_small">45dp</dimen>
+    <dimen name="item_margin_large">12dp</dimen>
+    <dimen name="item_margin_medium">8dp</dimen>
+    <dimen name="item_margin_small">4dp</dimen>
+    <dimen name="item_margin_tiny">2dp</dimen>
+    <dimen name="border_corner_radius">4dp</dimen>
+    <dimen name="border_width_medium">4dp</dimen>
+    <dimen name="border_width_small">2dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines: -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="item_horizontal_margin">8dp</dimen>
+    <dimen name="item_vertical_margin">4dp</dimen>
+    <dimen name="comment_padding">8dp</dimen>
+    <dimen name="comment_minHeight">64dp</dimen>
+</resources>

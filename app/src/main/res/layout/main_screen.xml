@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <import type="com.romanbrunner.apps.mealsuggestions.MainActivity.UserMode"/>
+        <variable name="newArticle" type="com.romanbrunner.apps.mealsuggestions.Article" />
+        <variable name="selectableAmount" type="Integer" />
+        <variable name="usedAmount" type="Integer" />
+        <variable name="priorityAmount" type="Integer" />
+        <variable name="fillerAmount" type="Integer" />
+        <variable name="toppingAmount" type="Integer" />
+        <variable name="userMode" type="UserMode" />
+        <variable name="sizeWeight" type="String" />
+        <variable name="sugarPercentage" type="String" />
+        <variable name="articlesCount" type="Integer" />
+        <variable name="toppingPercentage" type="String" />
+        <variable name="totalSpoonCount" type="String" />
+        <variable name="totalWeight" type="String" />
+        <variable name="totalSugarPercentage" type="String" />
+        <variable name="isChosenMuesliUsed" type="boolean" />
+        <variable name="isIngredientsListEmpty" type="boolean" />
+        <variable name="isInvalidSettings" type="boolean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/comment_padding"
+        tools:context=".InputPanel"
+        >
+
+        <LinearLayout
+            android:id="@+id/headerBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/item_horizontal_margin"
+            android:orientation="vertical"
+            android:background="@drawable/border_medium_rounded"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/comment_padding"
+            >
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:checkedButton="@+id/mixMuesliButton"
+                >
+
+                <RadioButton
+                    android:id="@+id/mixMuesliButton"
+                    android:layout_width="@dimen/user_mode_button_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/item_horizontal_margin"
+                    android:text="@string/t_suggestMealButton"
+                    android:onClick="onRadioButtonClicked"
+                    />
+
+                <RadioButton
+                    android:id="@+id/availabilityButton"
+                    android:layout_width="@dimen/user_mode_button_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/item_horizontal_margin"
+                    android:text="@string/t_availabilityButton"
+                    android:onClick="onRadioButtonClicked"
+                    />
+
+                <RadioButton
+                    android:id="@+id/editItemsButton"
+                    android:layout_width="@dimen/user_mode_button_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/t_editItemsButton"
+                    android:onClick="onRadioButtonClicked"
+                    />
+
+            </RadioGroup>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/countInfoRow"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/settings_row_height"
+                app:isVisible="@{userMode!=UserMode.EDIT_ITEMS}"
+                >
+
+                <TextView
+                    android:id="@+id/countInfoLabel"
+                    android:layout_width="@dimen/label_width_small"
+                    android:layout_height="wrap_content"
+                    android:text="@string/t_countInfoLabel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/selectableCountView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/item_margin_small"
+                    android:text="@{@string/t_selectableAmountText(selectableAmount)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/countInfoLabel"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/separatorALabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/item_margin_small"
+                    android:text="@string/t_separatorLabel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/selectableCountView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/priorityCountView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/item_margin_small"
+                    android:text="@{@string/t_priorityAmountText(priorityAmount)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/separatorALabel"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/separatorBLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/item_margin_small"
+                    android:text="@string/t_separatorLabel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/priorityCountView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/usedCountView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/item_margin_small"
+                    android:text="@{@string/t_usedAmountText(usedAmount)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/separatorBLabel"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/separatorCLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/item_margin_small"
+                    android:text="@string/t_separatorLabel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/usedCountView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/fillerCountView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/item_margin_small"
+                    android:text="@{@string/t_fillerAmountText(fillerAmount)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/separatorCLabel"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/separatorDLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/item_margin_small"
+                    android:text="@string/t_separatorLabel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/fillerCountView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/toppingsCountView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/item_margin_small"
+                    android:text="@{@string/t_toppingsAmountText(toppingAmount)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/separatorDLabel"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/availabilityBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/item_horizontal_margin"
+            android:orientation="vertical"
+            android:background="@drawable/border_medium_rounded"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/comment_padding"
+            app:isVisible="@{userMode!=UserMode.MIX_MUESLI}"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/importExportRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:isVisible="@{userMode==UserMode.EDIT_ITEMS}"
+                >
+
+                <Button
+                    android:id="@+id/importButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/t_importButton"
+                    android:textAllCaps="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/exportButton"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <Button
+                    android:id="@+id/exportButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/item_margin_small"
+                    android:text="@string/t_exportButton"
+                    android:textAllCaps="false"
+                    app:layout_constraintStart_toEndOf="@+id/importButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/newArticleBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/item_horizontal_margin"
+                android:orientation="vertical"
+                android:background="@drawable/border_small_angular"
+                android:layout_marginStart="@dimen/item_margin_tiny"
+                android:layout_marginEnd="@dimen/item_margin_tiny"
+                app:isVisible="@{userMode==UserMode.EDIT_ITEMS}"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/firstDataRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/settings_row_height"
+                    >
+
+                    <EditText
+                        android:id="@+id/nameField"
+                        android:layout_width="@dimen/input_field_width_large"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        android:hint="@string/h_name"
+                        android:importantForAutofill="no"
+                        android:inputType="textNoSuggestions"
+                        android:text="@={newArticle.name}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/brandField"
+                        android:layout_width="@dimen/input_field_width_medium"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/item_margin_small"
+                        android:text="@={newArticle.brand}"
+                        android:hint="@string/h_brand"
+                        android:importantForAutofill="no"
+                        android:inputType="textNoSuggestions"
+                        app:layout_constraintStart_toEndOf="@+id/nameField"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/secondDataRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/settings_row_height"
+                    >
+
+                    <Spinner
+                        android:id="@+id/typeSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                    <com.romanbrunner.apps.mealsuggestions.EditTextWithSuffix
+                        android:id="@+id/weightField"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/item_margin_small"
+                        android:text="@={newArticle.spoonWeight}"
+                        android:hint="@{@string/h_weight(newArticle.spoonNameCapitalized)}"
+                        android:importantForAutofill="no"
+                        android:inputType="numberDecimal"
+                        app:layout_constraintWidth_min="@dimen/weight_field_min_width"
+                        app:layout_constraintStart_toEndOf="@+id/typeSpinner"
+                        app:layout_constraintEnd_toStartOf="@+id/percentageField"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:suffix="@string/h_weightSuffix"
+                        />
+
+                    <com.romanbrunner.apps.mealsuggestions.EditTextWithSuffix
+                        android:id="@+id/percentageField"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/item_margin_small"
+                        android:text="@={newArticle.sugarPercentage*100}"
+                        android:hint="@string/h_percentage"
+                        android:importantForAutofill="no"
+                        android:inputType="numberDecimal"
+                        app:layout_constraintStart_toEndOf="@+id/weightField"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:suffix="@string/h_percentageSuffix"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Button
+                    android:id="@+id/addButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/t_addButton"
+                    android:textAllCaps="false"
+                    />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/availableArticles"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/item_margin_tiny"
+                android:layout_marginEnd="@dimen/item_margin_tiny"
+                app:layoutManager="LinearLayoutManager"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/settingsBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/item_horizontal_margin"
+            android:orientation="vertical"
+            android:background="@drawable/border_medium_rounded"
+            android:padding="@dimen/comment_padding"
+            app:isVisible="@{userMode==UserMode.MIX_MUESLI}"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sizeRow"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/settings_row_height"
+                >
+
+                <TextView
+                    android:id="@+id/sizeLabel"
+                    android:layout_width="@dimen/label_width_medium"
+                    android:layout_height="wrap_content"
+                    android:text="@string/t_sizeLabel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+                <SeekBar
+                    android:id="@+id/sizeSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/item_margin_small"
+                    android:max="@integer/sizeSliderMax"
+                    android:progress="3"
+                    app:layout_constraintStart_toEndOf="@+id/sizeLabel"
+                    app:layout_constraintEnd_toStartOf="@+id/sizeDataView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    />
+
+                <TextView
+                    android:id="@+id/sizeDataView"
+                    android:layout_width="@dimen/label_width_small"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/t_weightText(sizeWeight)}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sugarRow"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/settings_row_height"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:id="@+id/sugarLabel"
+                    android:layout_width="@dimen/label_width_medium"
+                    android:layout_height="wrap_content"
+                    android:text="@string/t_sugarLabel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+                <SeekBar
+                    android:id="@+id/sugarSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/item_margin_small"
+                    android:max="@integer/sugarSliderMax"
+                    android:progress="2"
+                    app:layout_constraintStart_toEndOf="@+id/sugarLabel"
+                    app:layout_constraintEnd_toStartOf="@+id/sugarDataView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    />
+
+                <TextView
+                    android:id="@+id/sugarDataView"
+                    android:layout_width="@dimen/label_width_small"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/t_percentageText(sugarPercentage)}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/articlesRow"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/settings_row_height"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:id="@+id/articlesLabel"
+                    android:layout_width="@dimen/label_width_medium"
+                    android:layout_height="wrap_content"
+                    android:text="@string/t_articlesLabel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+                <SeekBar
+                    android:id="@+id/articlesSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/item_margin_small"
+                    android:max="@integer/articlesSliderMax"
+                    android:progress="1"
+                    app:layout_constraintStart_toEndOf="@+id/articlesLabel"
+                    app:layout_constraintEnd_toStartOf="@+id/articlesDataView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    />
+
+                <TextView
+                    android:id="@+id/articlesDataView"
+                    android:layout_width="@dimen/label_width_small"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/t_countPlusOneText(articlesCount)}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/toppingRow"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/settings_row_height"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:id="@+id/toppingLabel"
+                    android:layout_width="@dimen/label_width_medium"
+                    android:layout_height="wrap_content"
+                    android:text="@string/t_toppingLabel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+                <SeekBar
+                    android:id="@+id/toppingSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/item_margin_small"
+                    android:max="@integer/toppingsSliderMax"
+                    android:progress="0"
+                    app:layout_constraintStart_toEndOf="@+id/toppingLabel"
+                    app:layout_constraintEnd_toStartOf="@+id/toppingDataView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    />
+
+                <TextView
+                    android:id="@+id/toppingDataView"
+                    android:layout_width="@dimen/label_width_small"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/t_percentageText(toppingPercentage)}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ingredientsBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/border_medium_rounded"
+            app:isVisible="@{userMode==UserMode.MIX_MUESLI}"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mixButtonsRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <Button
+                    android:id="@+id/newButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/t_newButton"
+                    android:textAllCaps="false"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/useButton"
+                    />
+
+                <Button
+                    android:id="@+id/useButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/t_useButton"
+                    android:textAllCaps="false"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/newButton"
+                    app:layout_constraintEnd_toStartOf="@+id/clearButton"
+                    app:isFocusable="@{!isChosenMuesliUsed}"
+                    />
+
+                <Button
+                    android:id="@+id/clearButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/t_clearButton"
+                    android:textAllCaps="false"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/useButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:isFocusable="@{!isIngredientsListEmpty}"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/muesliMixLabel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ingredients_label_height"
+                android:layout_marginStart="@dimen/item_margin_medium"
+                android:layout_marginEnd="@dimen/item_margin_medium"
+                android:gravity="center_vertical"
+                android:text="@string/t_muesliMixLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mixButtonsRow"
+                app:isVisible="@{!isIngredientsListEmpty}"
+                />
+
+            <TextView
+                android:id="@+id/totalValues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/item_margin_medium"
+                android:layout_marginEnd="@dimen/item_margin_medium"
+                android:gravity="center_vertical"
+                android:text="@{@string/t_totalValuesText(totalSpoonCount, totalWeight, totalSugarPercentage)}"
+                android:textColor="@android:color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/muesliMixLabel"
+                app:isVisible="@{!isIngredientsListEmpty}"
+                />
+
+            <TextView
+                android:id="@+id/invalidSettingsLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/item_margin_medium"
+                android:layout_marginEnd="@dimen/item_margin_medium"
+                android:text="@string/t_invalidSettingsLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/totalValues"
+                app:isVisible="@{isInvalidSettings}"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/item_margin_tiny"
+                android:layout_marginEnd="@dimen/item_margin_tiny"
+                android:layout_marginTop="@dimen/item_margin_small"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/totalValues"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layoutManager="LinearLayoutManager"
+                app:isVisible="@{!isInvalidSettings}"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</layout>

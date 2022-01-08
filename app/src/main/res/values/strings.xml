@@ -1,0 +1,48 @@
+<resources>
+    <!-- Labels: -->
+    <string name="l_appName">Meal Suggestions</string>
+
+    <!-- Texts: -->
+    <string name="t_countInfoLabel">Items:</string>
+    <string name="t_separatorLabel">|</string>
+    <string name="t_sizeLabel">Size:</string>
+    <string name="t_sugarLabel">Sugar:</string>
+    <string name="t_articlesLabel">Muesli:</string>
+    <string name="t_toppingLabel">Topping:</string>
+    <string name="t_muesliMixLabel"><u>Muesli mix total values and ingredients:</u></string>
+    <string name="t_invalidSettingsLabel">Cannot find valid muesli mix for given settings.\nChange settings and retry.</string>
+
+    <string name="t_selectableAmountText">%1$s Selectable</string>
+    <string name="t_priorityAmountText">%1$s Fixed</string>
+    <string name="t_usedAmountText">%1$s Used</string>
+    <string name="t_fillerAmountText">%1$s Filler</string>
+    <string name="t_toppingsAmountText">%1$s Toppings</string>
+    <string name="t_weightText">%1$s g</string>
+    <string name="t_percentageText">%1$s \%%</string>
+    <string name="t_countPlusOneText">%1$s (+1)</string>
+    <string name="t_nameText">%1$s - %2$s</string>
+    <string name="t_availabilityText">%1$dx</string>
+    <string name="t_articleText">%1$s | %2$s g per %3$s | %4$s \%% sugar</string>
+    <string name="t_totalValuesText">%1$s [%2$s g] | %3$s \%% sugar</string>
+    <string name="t_ingredientText">%1$s [%2$s g] | %3$s \%% sugar</string>
+
+    <string name="t_suggestMealButton">Suggest meal</string>
+    <string name="t_availabilityButton">Availabilities</string>
+    <string name="t_editItemsButton">Edit items</string>
+    <string name="t_newButton">New mix</string>
+    <string name="t_useButton">Use mix</string>
+    <string name="t_clearButton">Clear list</string>
+    <string name="t_addButton">Add new item</string>
+    <string name="t_importButton">Import items</string>
+    <string name="t_exportButton">Export items</string>
+    <string name="t_removeButton">X</string>
+    <string name="t_emptyButton">Empty</string>
+
+    <!-- Hints: -->
+    <string name="h_name">Name</string>
+    <string name="h_brand">Brand</string>
+    <string name="h_weight">%1$s</string>
+    <string name="h_percentage">Sugar</string>
+    <string name="h_weightSuffix">\u0020[g]</string>
+    <string name="h_percentageSuffix">\u0020[\%]</string>
+</resources>

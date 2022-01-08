@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <import type="com.romanbrunner.apps.mealsuggestions.MainActivity.UserMode"/>
+        <variable name="article" type="com.romanbrunner.apps.mealsuggestions.Article" />
+        <variable name="userMode" type="UserMode" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardBackgroundColor="#00000000"
+        card_view:cardCornerRadius="@dimen/border_corner_radius"
+        android:padding="@dimen/comment_padding"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/item_vertical_margin"
+            android:layout_marginBottom="@dimen/item_vertical_margin"
+            android:orientation="horizontal"
+            >
+
+            <Button
+                android:id="@+id/multiplierButton"
+                style="@android:style/Widget.Material.Light.Button.Inset"
+                android:layout_width="@dimen/available_button_size"
+                android:layout_height="@dimen/available_button_size"
+                android:layout_marginStart="@dimen/item_margin_small"
+                android:text="@{@string/t_availabilityText(article.multiplier)}"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:isVisible="@{userMode==UserMode.AVAILABILITY}"
+                />
+
+            <LinearLayout
+                android:id="@+id/dataColumn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/item_margin_medium"
+                android:layout_marginEnd="@dimen/item_margin_medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/multiplierButton"
+                app:layout_constraintEnd_toStartOf="@+id/removeButton"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/t_nameText(article.brand, article.name)}"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/t_articleText(article.typeString, article.spoonWeightString, article.SpoonName, article.sugarPercentageString)}"
+                    app:isVisible="@{userMode==UserMode.EDIT_ITEMS}"
+                    />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/removeButton"
+                style="@android:style/Widget.Material.Light.Button.Inset"
+                android:layout_width="@dimen/available_button_size"
+                android:layout_height="@dimen/available_button_size"
+                android:layout_marginEnd="@dimen/item_margin_small"
+                android:text="@string/t_removeButton"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:isVisible="@{userMode==UserMode.EDIT_ITEMS}"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="sizeSliderMax">4</integer>
+    <integer name="sugarSliderMax">4</integer>
+    <integer name="articlesSliderMax">4</integer>
+    <integer name="toppingsSliderMax">4</integer>
+</resources>

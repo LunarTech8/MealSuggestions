@@ -1,0 +1,394 @@
+[
+    {
+        "name": "Porridge Dreierlei Beere",
+        "brand": "3 Bears",
+        "type": 1,
+        "spoonWeight": 12.5,
+        "sugarPercentage": 0.22
+    },
+    {
+        "name": "Porridge Feinster Kakao",
+        "brand": "3 Bears",
+        "type": 1,
+        "spoonWeight": 11,
+        "sugarPercentage": 0.19
+    },
+    {
+        "name": "Porridge Winterzauber",
+        "brand": "3 Bears",
+        "type": 1,
+        "spoonWeight": 13,
+        "sugarPercentage": 0.21
+    },
+    {
+        "name": "Porridge Zimtiger Apfel",
+        "brand": "3 Bears",
+        "type": 1,
+        "spoonWeight": 11,
+        "sugarPercentage": 0.2
+    },
+    {
+        "name": "Dark Chocolate Himbeere",
+        "brand": "Davert",
+        "type": 1,
+        "spoonWeight": 10.5,
+        "sugarPercentage": 0.27
+    },
+    {
+        "name": "Magic Forest",
+        "brand": "Davert",
+        "type": 1,
+        "spoonWeight": 10,
+        "sugarPercentage": 0.22
+    },
+    {
+        "name": " Kirsche naturbelassen",
+        "brand": "Farmer's Snack",
+        "type": 2,
+        "spoonWeight": 7.5,
+        "sugarPercentage": 0.52
+    },
+    {
+        "name": "Crunchy Müsli Cacao & Hazelnut",
+        "brand": "Kellogg",
+        "type": 1,
+        "spoonWeight": 10,
+        "sugarPercentage": 0.13
+    },
+    {
+        "name": "Crunchy Müsli Choco & Pistachio",
+        "brand": "Kellogg",
+        "type": 1,
+        "spoonWeight": 11.5,
+        "sugarPercentage": 0.22
+    },
+    {
+        "name": "Crunchy Müsli Dark Choco & Coconut",
+        "brand": "Kellogg",
+        "type": 1,
+        "spoonWeight": 9,
+        "sugarPercentage": 0.13
+    },
+    {
+        "name": "Crunchy Müsli Red Berries",
+        "brand": "Kellogg",
+        "type": 1,
+        "spoonWeight": 9.5,
+        "sugarPercentage": 0.22
+    },
+    {
+        "name": "Superfood Crunchy Müsli Cacao & Nuts",
+        "brand": "Kellogg",
+        "type": 1,
+        "spoonWeight": 10.5,
+        "sugarPercentage": 0.14
+    },
+    {
+        "name": "Toppas Classic",
+        "brand": "Kellogg",
+        "type": 1,
+        "spoonWeight": 8,
+        "sugarPercentage": 0.17
+    },
+    {
+        "name": "Blütenzarte Kölln Flocken",
+        "brand": "Kölln",
+        "type": 0,
+        "spoonWeight": 9,
+        "sugarPercentage": 0.012
+    },
+    {
+        "name": "Dinkel Flocken Zart",
+        "brand": "Kölln",
+        "type": 0,
+        "spoonWeight": 8,
+        "sugarPercentage": 0.017
+    },
+    {
+        "name": "Echte Kölln Kernige",
+        "brand": "Kölln",
+        "type": 0,
+        "spoonWeight": 8,
+        "sugarPercentage": 0.012
+    },
+    {
+        "name": "Knusper Beere & Schoko",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 11.5,
+        "sugarPercentage": 0.24
+    },
+    {
+        "name": "Knusper Chai & Schoko",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 13,
+        "sugarPercentage": 0.21
+    },
+    {
+        "name": "Knusper Honig-Nuss",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 11.5,
+        "sugarPercentage": 0.19
+    },
+    {
+        "name": "Knusper Joghurt-Himbeer 30% weniger Fett",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 11.5,
+        "sugarPercentage": 0.21
+    },
+    {
+        "name": "Knusper Joghurt-Honig",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 11,
+        "sugarPercentage": 0.2
+    },
+    {
+        "name": "Knusper Mango-Kurkuma",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 11.5,
+        "sugarPercentage": 0.2
+    },
+    {
+        "name": "Knusper Nuss & Schoko",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 13,
+        "sugarPercentage": 0.2
+    },
+    {
+        "name": "Knusper Schoko & Kaffee",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 12,
+        "sugarPercentage": 0.22
+    },
+    {
+        "name": "Knusper Schoko & Keks",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 11.5,
+        "sugarPercentage": 0.21
+    },
+    {
+        "name": "Knusper Schoko & Keks Kakao",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 12,
+        "sugarPercentage": 0.22
+    },
+    {
+        "name": "Knusper Schoko Feinherb 30% weniger Fett",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 12,
+        "sugarPercentage": 0.2
+    },
+    {
+        "name": "Knusper Schoko-Karamell",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 12,
+        "sugarPercentage": 0.21
+    },
+    {
+        "name": "Knusper Schoko-Krokant",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 11.5,
+        "sugarPercentage": 0.22
+    },
+    {
+        "name": "Knusper Schoko-Minze",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 12,
+        "sugarPercentage": 0.23
+    },
+    {
+        "name": "Knusprige Haferfleks Schoko",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 6.5,
+        "sugarPercentage": 0.27
+    },
+    {
+        "name": "Knusprige Haferkissen Zimt",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 4.5,
+        "sugarPercentage": 0.2
+    },
+    {
+        "name": "Multikorn Flocken Kernig",
+        "brand": "Kölln",
+        "type": 0,
+        "spoonWeight": 10,
+        "sugarPercentage": 0.021
+    },
+    {
+        "name": "Nuss & Krokant",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 9.5,
+        "sugarPercentage": 0.077
+    },
+    {
+        "name": "Schoko 30% weniger Zucker",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 10,
+        "sugarPercentage": 0.13
+    },
+    {
+        "name": "Schoko-Kirsch",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 9.5,
+        "sugarPercentage": 0.16
+    },
+    {
+        "name": "Zartes Bircher",
+        "brand": "Kölln",
+        "type": 1,
+        "spoonWeight": 11.5,
+        "sugarPercentage": 0.17
+    },
+    {
+        "name": "Knusper Müsli",
+        "brand": "Manner",
+        "type": 1,
+        "spoonWeight": 10.5,
+        "sugarPercentage": 0.14
+    },
+    {
+        "name": "Allnatural Porridge Apfel",
+        "brand": "Nesquik",
+        "type": 1,
+        "spoonWeight": 12.5,
+        "sugarPercentage": 0.12300000000000001
+    },
+    {
+        "name": "Cini Minis Applecrush",
+        "brand": "Nestle",
+        "type": 1,
+        "spoonWeight": 9.5,
+        "sugarPercentage": 0.247
+    },
+    {
+        "name": "Clusters Chocolate",
+        "brand": "Nestle",
+        "type": 1,
+        "spoonWeight": 8,
+        "sugarPercentage": 0.285
+    },
+    {
+        "name": "Nesquik Knusper-Müsli",
+        "brand": "Nestle",
+        "type": 1,
+        "spoonWeight": 8,
+        "sugarPercentage": 0.21
+    },
+    {
+        "name": "Crunchy Müsli",
+        "brand": "Ovomaltine",
+        "type": 1,
+        "spoonWeight": 9,
+        "sugarPercentage": 0.2
+    },
+    {
+        "name": "Cashew-Cranberry-Mix",
+        "brand": "Seeberger",
+        "type": 2,
+        "spoonWeight": 6,
+        "sugarPercentage": 0.3
+    },
+    {
+        "name": "Gebrannte Erdnusskerne",
+        "brand": "Seeberger",
+        "type": 2,
+        "spoonWeight": 7.5,
+        "sugarPercentage": 0.36
+    },
+    {
+        "name": "Sonnenblumenkerne",
+        "brand": "Seeberger",
+        "type": 2,
+        "spoonWeight": 6,
+        "sugarPercentage": 0.024
+    },
+    {
+        "name": "Joghurtmüsli mit Erdbeer-Stücken",
+        "brand": "Vitalis",
+        "type": 1,
+        "spoonWeight": 9,
+        "sugarPercentage": 0.13
+    },
+    {
+        "name": "Knusper Himbeere 30% weniger Zucker",
+        "brand": "Vitalis",
+        "type": 1,
+        "spoonWeight": 9,
+        "sugarPercentage": 0.15
+    },
+    {
+        "name": "Knusper Schoko 30% weniger Zucker",
+        "brand": "Vitalis",
+        "type": 1,
+        "spoonWeight": 10,
+        "sugarPercentage": 0.14
+    },
+    {
+        "name": "Knuspermüsli Flakes + Mandeln",
+        "brand": "Vitalis",
+        "type": 1,
+        "spoonWeight": 10.5,
+        "sugarPercentage": 0.24
+    },
+    {
+        "name": "Knuspermüsli Honeys",
+        "brand": "Vitalis",
+        "type": 1,
+        "spoonWeight": 8.5,
+        "sugarPercentage": 0.28
+    },
+    {
+        "name": "Knuspermüsli Nuss-Nougat",
+        "brand": "Vitalis",
+        "type": 1,
+        "spoonWeight": 11.5,
+        "sugarPercentage": 0.25
+    },
+    {
+        "name": "Knuspermüsli Plus Nuss Mischung",
+        "brand": "Vitalis",
+        "type": 1,
+        "spoonWeight": 13.5,
+        "sugarPercentage": 0.2
+    },
+    {
+        "name": "Knuspermüsli Schoko + Keks",
+        "brand": "Vitalis",
+        "type": 1,
+        "spoonWeight": 11.5,
+        "sugarPercentage": 0.26
+    },
+    {
+        "name": "Schokomüsli 30% weniger Zucker",
+        "brand": "Vitalis",
+        "type": 1,
+        "spoonWeight": 10.5,
+        "sugarPercentage": 0.14
+    },
+    {
+        "name": "Schokomüsli Feinherb",
+        "brand": "Vitalis",
+        "type": 1,
+        "spoonWeight": 9.5,
+        "sugarPercentage": 0.15
+    }
+]

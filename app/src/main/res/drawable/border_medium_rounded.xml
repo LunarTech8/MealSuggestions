@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners android:radius="@dimen/border_corner_radius"/>
+    <padding android:left="@dimen/comment_padding" android:right="@dimen/comment_padding" android:top="@dimen/comment_padding" android:bottom="@dimen/comment_padding"/>
+    <stroke android:width="@dimen/border_width_medium" android:color="#CCCCCC"/>
+</shape>
