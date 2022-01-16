@@ -32,7 +32,7 @@ class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.EntryVi
         {
             super(binding.getRoot());
             this.binding = binding;
-            binding.setIsChosenMuesliUsed(ingredientsAdapter.mainActivity.isChosenMuesliUsed);
+            binding.setIsChosenMuesliUsed(ingredientsAdapter.mainActivity.isChosenMealUsed);
             binding.emptyButton.setOnClickListener((View view) ->
             {
                 final int position = getBindingAdapterPosition();
@@ -123,10 +123,10 @@ class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.EntryVi
     {
         // Adjust changeable values of the view fields by the current entries list:
         exerciseViewHolder.binding.setIngredient(ingredients.get(position));
-        exerciseViewHolder.binding.setIsChosenMuesliUsed(mainActivity.isChosenMuesliUsed);
+        exerciseViewHolder.binding.setIsChosenMuesliUsed(mainActivity.isChosenMealUsed);
         exerciseViewHolder.binding.name.setTextColor(Color.BLACK);
         exerciseViewHolder.binding.data.setTextColor(Color.BLACK);
-        if (!mainActivity.isChosenMuesliUsed)
+        if (!mainActivity.isChosenMealUsed)
         {
             setButtonFocusability(exerciseViewHolder.binding.emptyButton, true);
         }

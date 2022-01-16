@@ -8,6 +8,7 @@
     <data>
         <import type="com.romanbrunner.apps.mealsuggestions.MainActivity.UserMode"/>
         <variable name="newArticle" type="com.romanbrunner.apps.mealsuggestions.Article" />
+        <variable name="newMeal" type="com.romanbrunner.apps.mealsuggestions.Meal" />
         <variable name="selectableAmount" type="Integer" />
         <variable name="usedAmount" type="Integer" />
         <variable name="priorityAmount" type="Integer" />
@@ -211,7 +212,7 @@
             android:clickable="true"
             android:focusableInTouchMode="true"
             android:padding="@dimen/comment_padding"
-            app:isVisible="@{userMode!=UserMode.MIX_MUESLI}"
+            app:isVisible="@{userMode!=UserMode.SUGGEST_MEAL}"
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -260,13 +261,13 @@
                 >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/firstDataRow"
+                    android:id="@+id/articleFirstDataRow"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/settings_row_height"
                     >
 
                     <EditText
-                        android:id="@+id/nameField"
+                        android:id="@+id/articleNameField"
                         android:layout_width="@dimen/input_field_width_large"
                         android:layout_height="match_parent"
                         android:layout_marginStart="4dp"
@@ -278,7 +279,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/brandField"
+                        android:id="@+id/articleBrandField"
                         android:layout_width="@dimen/input_field_width_medium"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/item_margin_small"
@@ -286,20 +287,20 @@
                         android:hint="@string/h_brand"
                         android:importantForAutofill="no"
                         android:inputType="textNoSuggestions"
-                        app:layout_constraintStart_toEndOf="@+id/nameField"
+                        app:layout_constraintStart_toEndOf="@+id/articleNameField"
                         app:layout_constraintTop_toTopOf="parent"
                         />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/secondDataRow"
+                    android:id="@+id/articleSecondDataRow"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/settings_row_height"
                     >
 
                     <Spinner
-                        android:id="@+id/typeSpinner"
+                        android:id="@+id/articleTypeSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -307,23 +308,23 @@
                         />
 
                     <com.romanbrunner.apps.mealsuggestions.EditTextWithSuffix
-                        android:id="@+id/weightField"
+                        android:id="@+id/articleWeightField"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/item_margin_small"
-                        android:text="@={newArticle.spoonWeight}"
+                        android:text="@={newArticle.setWeight}"
                         android:hint="@{@string/h_weight(newArticle.spoonNameCapitalized)}"
                         android:importantForAutofill="no"
                         android:inputType="numberDecimal"
                         app:layout_constraintWidth_min="@dimen/weight_field_min_width"
-                        app:layout_constraintStart_toEndOf="@+id/typeSpinner"
-                        app:layout_constraintEnd_toStartOf="@+id/percentageField"
+                        app:layout_constraintStart_toEndOf="@+id/articleTypeSpinner"
+                        app:layout_constraintEnd_toStartOf="@+id/articlePercentageField"
                         app:layout_constraintTop_toTopOf="parent"
                         app:suffix="@string/h_weightSuffix"
                         />
 
                     <com.romanbrunner.apps.mealsuggestions.EditTextWithSuffix
-                        android:id="@+id/percentageField"
+                        android:id="@+id/articlePercentageField"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/item_margin_small"
@@ -331,7 +332,7 @@
                         android:hint="@string/h_percentage"
                         android:importantForAutofill="no"
                         android:inputType="numberDecimal"
-                        app:layout_constraintStart_toEndOf="@+id/weightField"
+                        app:layout_constraintStart_toEndOf="@+id/articleWeightField"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:suffix="@string/h_percentageSuffix"
@@ -343,7 +344,62 @@
                     android:id="@+id/addButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/t_addButton"
+                    android:text="@string/t_addArticleButton"
+                    android:textAllCaps="false"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/newMealBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/item_horizontal_margin"
+                android:orientation="vertical"
+                android:background="@drawable/border_small_angular"
+                android:layout_marginStart="@dimen/item_margin_tiny"
+                android:layout_marginEnd="@dimen/item_margin_tiny"
+                app:isVisible="@{userMode==UserMode.EDIT_ITEMS}"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mealDataRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/settings_row_height"
+                    >
+
+                    <EditText
+                        android:id="@+id/mealNameField"
+                        android:layout_width="@dimen/input_field_width_large"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        android:hint="@string/h_name"
+                        android:importantForAutofill="no"
+                        android:inputType="textNoSuggestions"
+                        android:text="@={newMeal.name}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/mealPortionsField"
+                        android:layout_width="@dimen/input_field_width_medium"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/item_margin_small"
+                        android:text="@={newMeal.getPortions}"
+                        android:hint="@string/h_portions"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        app:layout_constraintStart_toEndOf="@+id/mealNameField"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Button
+                    android:id="@+id/addMealButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/t_addMealButton"
                     android:textAllCaps="false"
                     />
 
@@ -368,7 +424,7 @@
             android:orientation="vertical"
             android:background="@drawable/border_medium_rounded"
             android:padding="@dimen/comment_padding"
-            app:isVisible="@{userMode==UserMode.MIX_MUESLI}"
+            app:isVisible="@{userMode==UserMode.SUGGEST_MEAL}"
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -546,7 +602,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@drawable/border_medium_rounded"
-            app:isVisible="@{userMode==UserMode.MIX_MUESLI}"
+            app:isVisible="@{userMode==UserMode.SUGGEST_MEAL}"
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout

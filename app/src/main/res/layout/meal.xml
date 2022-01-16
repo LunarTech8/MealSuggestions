@@ -7,7 +7,7 @@
 
     <data>
         <import type="com.romanbrunner.apps.mealsuggestions.MainActivity.UserMode"/>
-        <variable name="article" type="com.romanbrunner.apps.mealsuggestions.Article" />
+        <variable name="meal" type="com.romanbrunner.apps.mealsuggestions.Meal" />
         <variable name="userMode" type="UserMode" />
     </data>
 
@@ -28,15 +28,29 @@
             android:orientation="horizontal"
             >
 
+            <Button
+                android:id="@+id/multiplierButton"
+                style="@android:style/Widget.Material.Light.Button.Inset"
+                android:layout_width="@dimen/available_button_size"
+                android:layout_height="@dimen/available_button_size"
+                android:layout_marginStart="@dimen/item_margin_small"
+                android:text="@{@string/t_availabilityText(meal.multiplier)}"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:isVisible="@{userMode==UserMode.AVAILABILITY}"
+                />
+
             <LinearLayout
                 android:id="@+id/dataColumn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginStart="@dimen/item_margin_small"
+                android:layout_marginStart="@dimen/item_margin_medium"
                 android:layout_marginEnd="@dimen/item_margin_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/multiplierButton"
                 app:layout_constraintEnd_toStartOf="@+id/removeButton"
                 app:layout_constraintTop_toTopOf="parent"
                 >
@@ -45,7 +59,7 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/t_articleNameText(article.brand, article.name)}"
+                    android:text="@{@string/t_mealNameText(meal.name)}"
                     android:textStyle="bold"
                     />
 
@@ -53,7 +67,7 @@
                     android:id="@+id/data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/t_articleText(article.typeString, article.spoonWeightString, article.SpoonName, article.sugarPercentageString)}"
+                    android:text="@{@string/t_mealText(meal.portions)}"
                     app:isVisible="@{userMode==UserMode.EDIT_ITEMS}"
                     />
 

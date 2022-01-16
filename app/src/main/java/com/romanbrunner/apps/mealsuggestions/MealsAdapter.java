@@ -11,93 +11,93 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.romanbrunner.apps.mealsuggestions.databinding.ArticleBinding;
+import com.romanbrunner.apps.mealsuggestions.databinding.MealBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.EntryViewHolder>
+class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.EntryViewHolder>
 {
     // --------------------
     // Functional code
     // --------------------
 
     private final MainActivity mainActivity;
-    private List<? extends Article> articles;
+    private List<? extends Meal> meals;
 
     static class EntryViewHolder extends RecyclerView.ViewHolder
     {
-        final ArticleBinding binding;
+        final MealBinding binding;
 
-        EntryViewHolder(ArticleBinding binding, ArticlesAdapter articlesAdapter)
+        EntryViewHolder(MealBinding binding, MealsAdapter mealsAdapter)
         {
             super(binding.getRoot());
-            binding.setUserMode(articlesAdapter.mainActivity.userMode);
+            binding.setUserMode(mealsAdapter.mainActivity.userMode);
             binding.multiplierButton.setOnClickListener((View view) ->
             {
                 final int position = getBindingAdapterPosition();
-                articlesAdapter.articles.get(position).incrementMultiplier();
-                articlesAdapter.mainActivity.refreshData(false);
-                articlesAdapter.notifyItemChanged(position);
+                mealsAdapter.meals.get(position).incrementMultiplier();
+                mealsAdapter.mainActivity.refreshData(false);
+                mealsAdapter.notifyItemChanged(position);
             });
             binding.removeButton.setOnClickListener((View view) ->
             {
                 final int position = getBindingAdapterPosition();
-                articlesAdapter.mainActivity.removeArticle((ArticleEntity)articlesAdapter.articles.get(position));
-                articlesAdapter.mainActivity.refreshData(false);
-                articlesAdapter.articles.remove(position);
-                articlesAdapter.notifyItemRemoved(position);
+                mealsAdapter.mainActivity.removeMeal((MealEntity) mealsAdapter.meals.get(position));
+                mealsAdapter.mainActivity.refreshData(false);
+                mealsAdapter.meals.remove(position);
+                mealsAdapter.notifyItemRemoved(position);
             });
             this.binding = binding;
         }
     }
 
-    ArticlesAdapter(MainActivity mainActivity)
+    MealsAdapter(MainActivity mainActivity)
     {
         this.mainActivity = mainActivity;
-        articles = null;
+        meals = null;
     }
 
-    void setArticles(@NonNull final List<? extends Article> newArticles)
+    void setMeals(@NonNull final List<? extends Meal> newMeals)
     {
-        if (articles == null)
+        if (meals == null)
         {
             // Add all entries:
-            articles = new ArrayList<>(newArticles);
-            notifyItemRangeInserted(0, newArticles.size());
+            meals = new ArrayList<>(newMeals);
+            notifyItemRangeInserted(0, newMeals.size());
         }
         else
         {
-            Log.d("setArticles", "setArticles run");
+            Log.d("setMeals", "setMeals run");
             // Update changed entries:
             DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback()
             {
                 @Override
                 public int getOldListSize()
                 {
-                    return articles.size();
+                    return meals.size();
                 }
 
                 @Override
                 public int getNewListSize()
                 {
-                    return newArticles.size();
+                    return newMeals.size();
                 }
 
                 @Override
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition)
                 {
-                    return articles.get(oldItemPosition).getName().equals(newArticles.get(newItemPosition).getName());
+                    return meals.get(oldItemPosition).getName().equals(newMeals.get(newItemPosition).getName());
                 }
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition)
                 {
-                    return ArticleEntity.isContentTheSame(newArticles.get(newItemPosition), articles.get(oldItemPosition));
+                    return MealEntity.isContentTheSame(newMeals.get(newItemPosition), meals.get(oldItemPosition));
                 }
             });
-            articles = new ArrayList<>(newArticles);
+            meals = new ArrayList<>(newMeals);
             result.dispatchUpdatesTo(this);
         }
     }
@@ -105,19 +105,19 @@ class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.EntryViewHold
     @Override
     public int getItemCount()
     {
-        return (articles == null ? 0 : articles.size());
+        return (meals == null ? 0 : meals.size());
     }
 
     @Override
     public long getItemId(int position)
     {
-        return articles.get(position).getName().hashCode();
+        return meals.get(position).getName().hashCode();
     }
 
     @Override
     public @NonNull EntryViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType)
     {
-        ArticleBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.article, viewGroup, false);
+        MealBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.article, viewGroup, false);
         return new EntryViewHolder(binding, this);
     }
 
@@ -126,9 +126,9 @@ class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.EntryViewHold
     public void onBindViewHolder(EntryViewHolder exerciseViewHolder, int position)
     {
         // Adjust changeable values of the view fields by the current entries list:
-        final Article article = articles.get(position);
-        exerciseViewHolder.binding.setArticle(article);
-        if (article.isAvailable())
+        final Meal meal = meals.get(position);
+        exerciseViewHolder.binding.setMeal(meal);
+        if (meal.isAvailable())
         {
             exerciseViewHolder.binding.name.setTextColor(Color.BLACK);
             exerciseViewHolder.binding.data.setTextColor(Color.BLACK);

@@ -43,7 +43,7 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/t_nameText(ingredient.brand, ingredient.name)}"
+                    android:text="@{@string/t_articleNameText(ingredient.brand, ingredient.name)}"
                     android:textStyle="bold"
                     />
 

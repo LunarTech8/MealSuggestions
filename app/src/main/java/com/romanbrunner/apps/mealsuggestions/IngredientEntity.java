@@ -11,7 +11,7 @@ public class IngredientEntity implements Ingredient
     // --------------------
 
     private final Article article;
-    private final int spoonCount;  // TODO: rename to "amountFactor" and make a double
+    private final double amount;
 
     @Override
     public String getName()
@@ -26,28 +26,28 @@ public class IngredientEntity implements Ingredient
     }
 
     @Override
-    public int getSpoonCount()
+    public double getAmount()
     {
-        return spoonCount;
+        return amount;
     }
 
     @Override
     public String getSpoonCountString()
     {
-        if (spoonCount == 1)
+        if (amount == 1)
         {
             return "1 " + article.getSpoonName();
         }
         else
         {
-            return String.format(Locale.getDefault(), "%d " + article.getSpoonName() + "s", spoonCount);
+            return String.format(Locale.getDefault(), "%d " + article.getSpoonName() + "s", amount);
         }
     }
 
     @Override
     public String getWeightString()
     {
-        return String.format(Locale.getDefault(), "%.1f", spoonCount * article.getSpoonWeight());
+        return String.format(Locale.getDefault(), "%.1f", amount * article.getWeight());
     }
 
     @Override
@@ -62,15 +62,15 @@ public class IngredientEntity implements Ingredient
         this.article.setMultiplier(0);
     }
 
-    IngredientEntity(Article article, int spoonCount)
+    IngredientEntity(Article article, double amount)
     {
         this.article = article;
-        this.spoonCount = spoonCount;
+        this.amount = amount;
     }
 
     static boolean isContentTheSame(Ingredient ingredientA, Ingredient ingredientB)
     {
         return Objects.equals(ingredientA.getName(), ingredientB.getName())
-            && ingredientA.getSpoonCount() == ingredientB.getSpoonCount();
+            && ingredientA.getAmount() == ingredientB.getAmount();
     }
 }

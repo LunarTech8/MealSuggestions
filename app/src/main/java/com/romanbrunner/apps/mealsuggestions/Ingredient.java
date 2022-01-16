@@ -5,7 +5,7 @@ public interface Ingredient
 {
     String getName();
     String getBrand();
-    int getSpoonCount();
+    double getAmount();
     String getSpoonCountString();
     String getWeightString();
     String getSugarPercentageString();
