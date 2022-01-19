@@ -12,13 +12,8 @@
         <variable name="selectableAmount" type="Integer" />
         <variable name="usedAmount" type="Integer" />
         <variable name="priorityAmount" type="Integer" />
-        <variable name="fillerAmount" type="Integer" />
-        <variable name="toppingAmount" type="Integer" />
         <variable name="userMode" type="UserMode" />
         <variable name="sizeWeight" type="String" />
-        <variable name="sugarPercentage" type="String" />
-        <variable name="articlesCount" type="Integer" />
-        <variable name="toppingPercentage" type="String" />
         <variable name="totalSpoonCount" type="String" />
         <variable name="totalWeight" type="String" />
         <variable name="totalSugarPercentage" type="String" />
@@ -122,79 +117,13 @@
                     />
 
                 <TextView
-                    android:id="@+id/priorityCountView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/item_margin_small"
-                    android:text="@{@string/t_priorityAmountText(priorityAmount)}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/separatorALabel"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-
-                <TextView
-                    android:id="@+id/separatorBLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/item_margin_small"
-                    android:text="@string/t_separatorLabel"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/priorityCountView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-
-                <TextView
                     android:id="@+id/usedCountView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/item_margin_small"
                     android:text="@{@string/t_usedAmountText(usedAmount)}"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/separatorBLabel"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-
-                <TextView
-                    android:id="@+id/separatorCLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/item_margin_small"
-                    android:text="@string/t_separatorLabel"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/usedCountView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-
-                <TextView
-                    android:id="@+id/fillerCountView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/item_margin_small"
-                    android:text="@{@string/t_fillerAmountText(fillerAmount)}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/separatorCLabel"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-
-                <TextView
-                    android:id="@+id/separatorDLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/item_margin_small"
-                    android:text="@string/t_separatorLabel"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/fillerCountView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-
-                <TextView
-                    android:id="@+id/toppingsCountView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/item_margin_small"
-                    android:text="@{@string/t_toppingsAmountText(toppingAmount)}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/separatorDLabel"
+                    app:layout_constraintStart_toEndOf="@+id/separatorALabel"
                     app:layout_constraintTop_toTopOf="parent"
                     />
 
@@ -461,132 +390,6 @@
                     android:layout_width="@dimen/label_width_small"
                     android:layout_height="wrap_content"
                     android:text="@{@string/t_weightText(sizeWeight)}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/sugarRow"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:id="@+id/sugarLabel"
-                    android:layout_width="@dimen/label_width_medium"
-                    android:layout_height="wrap_content"
-                    android:text="@string/t_sugarLabel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-
-                <SeekBar
-                    android:id="@+id/sugarSlider"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/item_margin_small"
-                    android:max="@integer/sugarSliderMax"
-                    android:progress="2"
-                    app:layout_constraintStart_toEndOf="@+id/sugarLabel"
-                    app:layout_constraintEnd_toStartOf="@+id/sugarDataView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    style="@style/Widget.AppCompat.SeekBar.Discrete"
-                    />
-
-                <TextView
-                    android:id="@+id/sugarDataView"
-                    android:layout_width="@dimen/label_width_small"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/t_percentageText(sugarPercentage)}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/articlesRow"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:id="@+id/articlesLabel"
-                    android:layout_width="@dimen/label_width_medium"
-                    android:layout_height="wrap_content"
-                    android:text="@string/t_articlesLabel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-
-                <SeekBar
-                    android:id="@+id/articlesSlider"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/item_margin_small"
-                    android:max="@integer/articlesSliderMax"
-                    android:progress="1"
-                    app:layout_constraintStart_toEndOf="@+id/articlesLabel"
-                    app:layout_constraintEnd_toStartOf="@+id/articlesDataView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    style="@style/Widget.AppCompat.SeekBar.Discrete"
-                    />
-
-                <TextView
-                    android:id="@+id/articlesDataView"
-                    android:layout_width="@dimen/label_width_small"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/t_countPlusOneText(articlesCount)}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/toppingRow"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/settings_row_height"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:id="@+id/toppingLabel"
-                    android:layout_width="@dimen/label_width_medium"
-                    android:layout_height="wrap_content"
-                    android:text="@string/t_toppingLabel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-
-                <SeekBar
-                    android:id="@+id/toppingSlider"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/item_margin_small"
-                    android:max="@integer/toppingsSliderMax"
-                    android:progress="0"
-                    app:layout_constraintStart_toEndOf="@+id/toppingLabel"
-                    app:layout_constraintEnd_toStartOf="@+id/toppingDataView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    style="@style/Widget.AppCompat.SeekBar.Discrete"
-                    />
-
-                <TextView
-                    android:id="@+id/toppingDataView"
-                    android:layout_width="@dimen/label_width_small"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/t_percentageText(toppingPercentage)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"

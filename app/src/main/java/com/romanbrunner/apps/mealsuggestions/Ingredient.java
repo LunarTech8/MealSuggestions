@@ -9,6 +9,4 @@ public interface Ingredient
     String getSpoonCountString();
     String getWeightString();
     String getSugarPercentageString();
-
-    void markAsEmpty();
 }

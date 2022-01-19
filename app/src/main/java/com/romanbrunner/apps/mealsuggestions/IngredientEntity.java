@@ -56,12 +56,6 @@ public class IngredientEntity implements Ingredient
         return String.format(Locale.getDefault(), "%.1f", article.getSugarPercentage() * 100);
     }
 
-    @Override
-    public void markAsEmpty()
-    {
-        this.article.setMultiplier(0);
-    }
-
     IngredientEntity(Article article, double amount)
     {
         this.article = article;

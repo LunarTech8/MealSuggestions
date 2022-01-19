@@ -112,6 +112,12 @@ public class MealEntity implements Meal
         }
     }
 
+    @Override
+    public void markAsEmpty()
+    {
+        this.multiplier = 0;
+    }
+
     MealEntity(String name, LinkedList<Ingredient> ingredients, int portions)
     {
         this.name = name;
@@ -153,9 +159,9 @@ public class MealEntity implements Meal
         outputStream.write(entryBytes);
     }
 
-    static boolean isNameTheSame(Article articleA, Article articleB)
+    static boolean isNameTheSame(Meal mealA, Meal mealB)
     {
-        return Objects.equals(articleA.getName(), articleB.getName());
+        return Objects.equals(mealA.getName(), mealB.getName());
     }
 
     static boolean isContentTheSame(Meal mealA, Meal mealB)

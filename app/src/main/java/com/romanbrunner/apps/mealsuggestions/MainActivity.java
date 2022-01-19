@@ -61,10 +61,6 @@ public class MainActivity extends AppCompatActivity
     // Data code
     // --------------------
 
-    private final static float FILLER_INGREDIENT_RATIO = 0.5F;  // Ratio compared to first regular article, 1 being equal ratio
-    private final static int TOPPINGS_INGREDIENT_COUNT = 1;  // Currently fixed, might be transformed back into a dynamic slider value
-    private final static int MAX_FULL_RESET_RANDOMIZE_TRIES = 1;
-    private final static int MAX_RANDOMIZE_TRIES = 1024;
     private final static String INTENT_TYPE_JSON = "*/*";  // No MIME type for json yet, thus allowing every file
     private final static String ARTICLES_FILENAME = "AllArticles";
     private final static String PREFS_NAME = "GlobalPreferences";
@@ -74,21 +70,6 @@ public class MainActivity extends AppCompatActivity
     private static float sizeValue2SizeWeight(int sizeValue)
     {
         return 35F + 15F * sizeValue;
-    }
-
-    private static float sugarValue2SugarPercentage(int sugarValue)
-    {
-        return 0.1F + 0.025F * sugarValue;
-    }
-
-    private static int articlesValue2ArticlesCount(int articlesValue)
-    {
-        return articlesValue + 1;
-    }
-
-    private static float toppingValue2ToppingPercentage(int toppingValue)
-    {
-        return (toppingValue > 0 ? 0.05F : 0F) + 0.05F * toppingValue;
     }
 
 
@@ -107,15 +88,12 @@ public class MainActivity extends AppCompatActivity
     private final List<MealEntity> allMeals = new LinkedList<>();  // All catalogued meals, also not available ones
     private final List<MealEntity> selectableMeals = new LinkedList<>();  // Selectable meals for the next meal suggestion
     private final List<MealEntity> usedMeals = new LinkedList<>();  // Used meals, will be reshuffled into selectableMeals once that is depleted
-    private MealEntity chosenMeal = null;  // Chosen meal for the current meal suggestion  // FIXME: probably obsolete here as global variable
+    private MealEntity chosenMeal = null;  // Chosen meal for the current meal suggestion
     private IngredientsAdapter ingredientsAdapter;
     private MealsAdapter availableMealsAdapter;
     private MealSuggestion mealSuggestion;
     private MainScreenBinding binding;
     private int sizeValue;
-    private int sugarValue;
-    private int articlesValue;
-    private int toppingsValue;
     private String itemsJsonString;
     private ActivityResultLauncher<Intent> createFileActivityLauncher;
     private ActivityResultLauncher<Intent> openFileActivityLauncher;
@@ -135,52 +113,9 @@ public class MainActivity extends AppCompatActivity
         return lowestValue;
     }
 
-    private static <T> void removeNonIntersectingElements(final List<T> targetList, final List<T> checkList)
-    {
-        targetList.removeIf(t -> !checkList.contains(t));
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(boolean reloadArticleAdapter)
-    {
-        refreshStateLists();
-        refreshCountInfo();
-        if (reloadArticleAdapter)
-        {
-            availableMealsAdapter.notifyDataSetChanged();
-        }
-    }
-
     public void removeMeal(final MealEntity meal)
     {
         allMeals.remove(meal);
-    }
-
-    private List<MealEntity> getAvailableMeals()
-    {
-        List<MealEntity> availableMeals = new LinkedList<>();
-        for (MealEntity meal: allMeals)
-        {
-            if (meal.isAvailable())
-            {
-                availableMeals.add(meal);
-            }
-        }
-        return availableMeals;
-    }
-
-    private void moveMealsToStateList(final List<MealEntity> sourceStateList, final List<MealEntity> targetStateList)
-    {
-        if (sourceStateList == usedMeals)
-        {
-            sourceStateList.forEach((MealEntity meal) -> meal.setSelectionsLeft(meal.getMultiplier()));
-        }
-        if (targetStateList == usedMeals)
-        {
-            sourceStateList.forEach((MealEntity meal) -> meal.setSelectionsLeft(0));
-        }
-        targetStateList.addAll(sourceStateList);
-        sourceStateList.clear();
     }
 
     private void addMealsToFittingStateList(final List<MealEntity> meals)
@@ -199,16 +134,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
-    }
-
-    private void refreshStateLists()
-    {
-        final List<MealEntity> availableMeals = getAvailableMeals();
-        // Clear state lists that could be outdated:
-        usedMeals.clear();
-        selectableMeals.clear();
-        // Add available articles to fitting state lists that aren't in one:
-        addMealsToFittingStateList(availableMeals);
     }
 
     private void refreshCountInfo()
@@ -283,9 +208,6 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putInt("sizeValue", sizeValue);
-        editor.putInt("sugarValue", sugarValue);
-        editor.putInt("articlesValue", articlesValue);
-        editor.putInt("toppingsValue", toppingsValue);
         editor.apply();
     }
 
@@ -293,13 +215,7 @@ public class MainActivity extends AppCompatActivity
     {
         SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
         sizeValue = sharedPrefs.getInt("sizeValue", binding.sizeSlider.getProgress());
-        sugarValue = sharedPrefs.getInt("sugarValue", binding.sugarSlider.getProgress());
-        articlesValue = sharedPrefs.getInt("articlesValue", binding.articlesSlider.getProgress());
-        toppingsValue = sharedPrefs.getInt("toppingsValue", binding.articlesSlider.getProgress());
         binding.sizeSlider.setProgress(sizeValue);
-        binding.sugarSlider.setProgress(sugarValue);
-        binding.articlesSlider.setProgress(articlesValue);
-        binding.toppingSlider.setProgress(toppingsValue);
     }
 
     private void hideKeyboard(final View view)
@@ -396,34 +312,20 @@ public class MainActivity extends AppCompatActivity
 
     private class MealSuggestion  // TODO: refactor to simple one item suggestions
     {
-        private float targetWeight;
-        private float targetSugar;
-        private int regularArticlesCount;
-        private float toppingPercentage;
-        private int toppingsCount;
-        private final List<ArticleEntity> selectableToppingArticles;
-        private final List<ArticleEntity> chosenToppingArticles;
-        private ArticleEntity fillerArticle;
-        private int totalSpoons;
+        private float targetPortions;  // TODO: maybe change to int
         private float totalWeight;
         private float totalSugar;
         private final List<IngredientEntity> ingredients;
 
-        public MealSuggestion(final float targetWeight, final float targetSugar, final int regularArticlesCount, final float toppingPercentage, final int toppingsCount)
+        public MealSuggestion(final float targetPortions)
         {
-            this.targetWeight = targetWeight;
-            this.targetSugar = targetSugar;
-            this.regularArticlesCount = regularArticlesCount;
-            this.toppingPercentage = toppingPercentage;
-            this.toppingsCount = toppingsCount;
-            ingredients = new ArrayList<>(regularArticlesCount + 1);
-            selectableToppingArticles = new ArrayList<>(toppingArticles);
-            chosenToppingArticles = new ArrayList<>(toppingsCount);
+            this.targetPortions = targetPortions;
+            ingredients = new ArrayList<>();
         }
 
-        public void changeTargetWeight(float targetWeight)
+        public void changeTargetPortions(float targetPortions)
         {
-            this.targetWeight = targetWeight;
+            this.targetPortions = targetPortions;
             if (mealSuggestion.determineIngredients())
             {
                 mealSuggestion.updateDisplayValid(binding);
@@ -434,100 +336,25 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        public void changeTargetSugar(float targetSugar)
+        /** Return chosen meal back to the selectable pool if necessary. */
+        public void resetMealsPool()
         {
-            this.targetSugar = targetSugar;
-            if (mealSuggestion.determineIngredients())
+            if (chosenMeal != null)
             {
-                mealSuggestion.updateDisplayValid(binding);
-            }
-            else
-            {
-                mealSuggestion.updateDisplayInvalid(binding);
+                selectableMeals.add(chosenMeal);
+                chosenMeal = null;
             }
         }
 
-        public void changeRegularArticlesCount(int regularArticlesCount, Random random)
+        /** Chose meal from global lists. */
+        public void choseMeal(final Random random)
         {
-            final int countChange = regularArticlesCount - this.regularArticlesCount;
-            if (this.regularArticlesCount + countChange <= 0 || -countChange >= chosenMeal.size() || countChange > selectableMeals.size())
-            {
-                mealSuggestion.updateDisplayInvalid(binding);
-                return;
-            }
-            if (countChange > 0)
-            {
-                for (int i = 0; i < countChange; i++)
-                {
-                    chosenMeal.add(selectableMeals.remove(random.nextInt(selectableMeals.size())));
-                }
-            }
-            else if (countChange < 0)
-            {
-                for (int i = 0; i < -countChange; i++)
-                {
-                    selectableMeals.add(chosenMeal.remove(chosenMeal.size() - 1));
-                }
-            }
-            this.regularArticlesCount = regularArticlesCount;
-            if (mealSuggestion.determineIngredients())
-            {
-                mealSuggestion.updateDisplayValid(binding);
-            }
-            else
-            {
-                mealSuggestion.updateDisplayInvalid(binding);
-            }
-        }
-
-        public void changeToppingPercentage(float toppingPercentage)
-        {
-            this.toppingPercentage = toppingPercentage;
-            toppingsCount = (toppingPercentage > 0 ? TOPPINGS_INGREDIENT_COUNT : 0);
-            if (mealSuggestion.determineIngredients())
-            {
-                mealSuggestion.updateDisplayValid(binding);
-            }
-            else
-            {
-                mealSuggestion.updateDisplayInvalid(binding);
-            }
-        }
-
-        /** Return chosen articles back to the selectable pool if necessary. */
-        public void resetArticlesPool()
-        {
-            if (!chosenMeal.isEmpty())
-            {
-                moveMealsToStateList(chosenMeal, selectableMeals);
-            }
-            if (!chosenToppingArticles.isEmpty())
-            {
-                selectableToppingArticles.addAll(chosenToppingArticles);
-                chosenToppingArticles.clear();
-            }
-        }
-
-        /** Chose articles for muesli from global lists. */
-        public void choseArticles(final Random random)
-        {
-            chosenMeal.addAll(priorityRegularArticles);
-            selectableMeals.removeAll(priorityRegularArticles);
-            for (int i = 0; i < regularArticlesCount - priorityRegularArticles.size(); i++)
-            {
-                chosenMeal.add(selectableMeals.remove(random.nextInt(selectableMeals.size())));
-            }
-            fillerArticle = fillerArticles.get(random.nextInt(fillerArticles.size()));
-            for (int i = 0; i < toppingsCount; i++)
-            {
-                chosenToppingArticles.add(selectableToppingArticles.remove(random.nextInt(selectableToppingArticles.size())));
-            }
+            chosenMeal = selectableMeals.remove(random.nextInt(selectableMeals.size()));
         }
 
         /** Determine ingredients based on chosen articles and target values. */
         public boolean determineIngredients()
         {
-            totalSpoons = 0;
             totalWeight = 0F;
             totalSugar = 0F;
             float weight;
@@ -540,7 +367,7 @@ public class MainActivity extends AppCompatActivity
             for (int i = 0; i < toppingsCount; i++)
             {
                 article = chosenToppingArticles.get(i);
-                spoonCount = (int)Math.round(targetWeight * toppingPercentage / (article.getWeight() * toppingsCount));
+                spoonCount = (int)Math.round(targetPortions * toppingPercentage / (article.getWeight() * toppingsCount));
                 spoonCount = Math.max(spoonCount, 1);
                 weight = spoonCount * (float)article.getWeight();
                 totalSpoons += spoonCount;
@@ -554,7 +381,7 @@ public class MainActivity extends AppCompatActivity
             for (int i = 0; i < regularArticlesCount - 1; i++)
             {
                 article = chosenMeal.get(i);
-                spoonCount = (int)Math.round((targetWeight - toppingsWeight) / (article.getWeight() * (regularArticlesCount + FILLER_INGREDIENT_RATIO)));
+                spoonCount = (int)Math.round((targetPortions - toppingsWeight) / (article.getWeight() * (regularArticlesCount + FILLER_INGREDIENT_RATIO)));
                 spoonCount = Math.max(spoonCount, 1);
                 weight = spoonCount * (float)article.getWeight();
                 totalSpoons += spoonCount;
@@ -565,7 +392,7 @@ public class MainActivity extends AppCompatActivity
             }
             // Calculate and add spoons for last regular article based on sugar percentage:
             article = chosenMeal.get(regularArticlesCount - 1);
-            spoonCount = (int)Math.round((targetSugar - targetWeight * fillerArticle.getSugarPercentage() - sugarPartialSum) / (article.getWeight() * (article.getSugarPercentage() - fillerArticle.getSugarPercentage())));
+            spoonCount = (int)Math.round((targetSugar - targetPortions * fillerArticle.getSugarPercentage() - sugarPartialSum) / (article.getWeight() * (article.getSugarPercentage() - fillerArticle.getSugarPercentage())));
             if (spoonCount <= 0) return false;
             weight = spoonCount * (float)article.getWeight();
             totalSpoons += spoonCount;
@@ -573,7 +400,7 @@ public class MainActivity extends AppCompatActivity
             totalSugar += weight * article.getSugarPercentage();
             ingredients.add(new IngredientEntity(article, spoonCount));
             // Calculate and add spoons for filler article based on total size:
-            spoonCount = (int)Math.round((targetWeight - totalWeight) / fillerArticle.getWeight());
+            spoonCount = (int)Math.round((targetPortions - totalWeight) / fillerArticle.getWeight());
             if (spoonCount < 0) return false;
             if (spoonCount > 0)
             {
@@ -709,7 +536,7 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         addMealsToFittingStateList(allMeals);
-        if (!selectableMeals.isEmpty() && !fillerArticles.isEmpty() && getLowestValue(selectableMeals, ArticleEntity::getSugarPercentage) <= getLowestValue(fillerArticles, ArticleEntity::getSugarPercentage)) throw new AssertionError("Sugar percentage of all filler articles has to be lower than that of regular articles");
+        if (!selectableMeals.isEmpty() && getLowestValue(selectableMeals, ArticleEntity::getSugarPercentage) <= getLowestValue(fillerArticles, ArticleEntity::getSugarPercentage)) throw new AssertionError("Sugar percentage of all filler articles has to be lower than that of regular articles");
 
         // Init layout variables:
         binding.setUserMode(userMode);
@@ -717,9 +544,6 @@ public class MainActivity extends AppCompatActivity
         binding.setNewArticle(new ArticleEntity("", "", (Type)binding.typeSpinner.getSelectedItem(), 0F, 0F));
         refreshCountInfo();
         binding.setSizeWeight(String.format(Locale.getDefault(), "%.0f", sizeValue2SizeWeight(sizeValue)));
-        binding.setSugarPercentage(String.format(Locale.getDefault(), "%.1f", sugarValue2SugarPercentage(sugarValue) * 100));
-        binding.setArticlesCount(articlesValue2ArticlesCount(articlesValue));
-        binding.setToppingPercentage(String.format(Locale.getDefault(), "%.0f", toppingValue2ToppingPercentage(toppingsValue) * 100));
         binding.setIsChosenMuesliUsed(isChosenMealUsed);
         binding.setIsIngredientsListEmpty(true);
         binding.setIsInvalidSettings(false);
@@ -740,73 +564,9 @@ public class MainActivity extends AppCompatActivity
                 sizeValue = progress;
                 if (mealSuggestion != null)
                 {
-                    mealSuggestion.changeTargetWeight(sizeValue2SizeWeight(sizeValue));
+                    mealSuggestion.changeTargetPortions(sizeValue2SizeWeight(sizeValue));
                 }
                 binding.setSizeWeight(String.format(Locale.getDefault(), "%.0f", sizeValue2SizeWeight(sizeValue)));
-                binding.executePendingBindings();  // Espresso does not know how to wait for data binding's loop so we execute changes sync
-                storePreferences();
-            }
-        });
-        binding.sugarSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-        {
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {
-                sugarValue = progress;
-                if (mealSuggestion != null)
-                {
-                    mealSuggestion.changeTargetSugar(sugarValue2SugarPercentage(sugarValue) * mealSuggestion.targetWeight);
-                }
-                binding.setSugarPercentage(String.format(Locale.getDefault(), "%.1f", sugarValue2SugarPercentage(sugarValue) * 100));
-                binding.executePendingBindings();  // Espresso does not know how to wait for data binding's loop so we execute changes sync
-                storePreferences();
-            }
-        });
-        binding.articlesSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-        {
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {
-                articlesValue = progress;
-                if (mealSuggestion != null)
-                {
-                    mealSuggestion.changeRegularArticlesCount(articlesValue2ArticlesCount(articlesValue), random);
-                    refreshCountInfo();
-                }
-                binding.setArticlesCount(articlesValue2ArticlesCount(articlesValue));
-                binding.executePendingBindings();  // Espresso does not know how to wait for data binding's loop so we execute changes sync
-                storePreferences();
-            }
-        });
-        binding.toppingSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-        {
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {
-                toppingsValue = progress;
-                if (mealSuggestion != null)
-                {
-                    mealSuggestion.changeToppingPercentage(toppingValue2ToppingPercentage(toppingsValue));
-                }
-                binding.setToppingPercentage(String.format(Locale.getDefault(), "%.0f", toppingValue2ToppingPercentage(toppingsValue) * 100));
                 binding.executePendingBindings();  // Espresso does not know how to wait for data binding's loop so we execute changes sync
                 storePreferences();
             }
@@ -860,69 +620,49 @@ public class MainActivity extends AppCompatActivity
         binding.newButton.setOnClickListener((View view) ->
         {
             final float targetWeight = sizeValue2SizeWeight(sizeValue);
-            final float targetSugar = sugarValue2SugarPercentage(sugarValue) * targetWeight;
-            final int regularArticlesCount = articlesValue2ArticlesCount(articlesValue);
-            final float toppingPercentage = toppingValue2ToppingPercentage(toppingsValue);
-            final int toppingsCount = (toppingPercentage > 0 ? TOPPINGS_INGREDIENT_COUNT : 0);
-            mealSuggestion = new MealSuggestion(targetWeight, targetSugar, regularArticlesCount, toppingPercentage, toppingsCount);
+            mealSuggestion = new MealSuggestion(targetWeight);
 
-            // Return used articles back to the selectable pool if necessary:
-            if (selectableMeals.size() + chosenMeal.size() < regularArticlesCount)
+            // Return used meals back to the selectable pool if necessary:
+            if (selectableMeals.size() <= 0)
             {
-                priorityRegularArticles.addAll(selectableMeals);
-                priorityRegularArticles.addAll(chosenMeal);
-                moveMealsToStateList(usedMeals, selectableMeals);
+                if (chosenMeal != null)
+                {
+                    selectableMeals.add(chosenMeal);
+                    chosenMeal = null;
+                }
+                usedMeals.forEach((MealEntity meal) -> meal.setSelectionsLeft(meal.getMultiplier()));
+                selectableMeals.addAll(usedMeals);
+                usedMeals.clear();
             }
 
-            // Check general conditions for valid mix:
-            if (fillerArticles.size() <= 0 || selectableMeals.size() + chosenMeal.size() < regularArticlesCount || toppingArticles.size() < toppingsCount)
+            // Check general conditions for valid suggestion:
+            if (selectableMeals.size() <= 0)
             {
                 mealSuggestion.updateDisplayInvalid(binding);
                 binding.executePendingBindings();  // Espresso does not know how to wait for data binding's loop so we execute changes sync
                 mealSuggestion = null;
-                Log.i("onCreate", "Not enough available articles for a valid mix");
+                Log.i("onCreate", "Not enough available meals for a valid mix");
                 return;
             }
 
-            // Retry with randomized ingredients until a valid mix is found:
-            int fullResetTryCounter = 0;
-            while (fullResetTryCounter <= MAX_FULL_RESET_RANDOMIZE_TRIES)
-            {
-                for (int tryCounter = 0; tryCounter < MAX_RANDOMIZE_TRIES; tryCounter++)
-                {
-                    mealSuggestion.resetArticlesPool();
-                    mealSuggestion.choseArticles(random);
-                    if (!mealSuggestion.determineIngredients()) continue;
-                    mealSuggestion.updateDisplayValid(binding);
-                    binding.executePendingBindings();  // Espresso does not know how to wait for data binding's loop so we execute changes sync
-                    Log.i("onCreate", "tryCounter: " + tryCounter);
-                    return;
-                }
-                // Return used and chosen articles back to the selectable pool and reset priority choosing:
-                moveMealsToStateList(usedMeals, selectableMeals);
-                moveMealsToStateList(chosenMeal, selectableMeals);
-                priorityRegularArticles.clear();
-                Log.i("onCreate", "Cannot find valid mix with selectable articles, retrying with full reset");
-                fullResetTryCounter += 1;
-            }
-            // No valid mix could be found:
-            mealSuggestion.updateDisplayInvalid(binding);
-            refreshCountInfo();
+            // Chose and display random meal:
+            mealSuggestion.resetMealsPool();
+            mealSuggestion.choseMeal(random);
+            mealSuggestion.determineIngredients();
+            mealSuggestion.updateDisplayValid(binding);
             binding.executePendingBindings();  // Espresso does not know how to wait for data binding's loop so we execute changes sync
-            mealSuggestion = null;
         });
         binding.useButton.setOnClickListener((View view) ->
         {
-            if (chosenMeal.isEmpty())
+            if (chosenMeal == null)
             {
                 Log.e("onCreate", "ChosenArticles is empty");
             }
 
-            // Decrement selections left, move articles to fitting pools and reset priority choosing:
-            chosenMeal.forEach(ArticleEntity::decrementSelectionsLeft);
+            // Decrement selections left and move meal to fitting pool:
+            chosenMeal.decrementSelectionsLeft();
             addMealsToFittingStateList(chosenMeal);
-            chosenMeal.clear();
-            priorityRegularArticles.clear();
+            chosenMeal = null;
 
             // Adjust mix buttons and ingredients list:
             binding.setIsChosenMuesliUsed(isChosenMealUsed = true);
@@ -937,9 +677,10 @@ public class MainActivity extends AppCompatActivity
         binding.clearButton.setOnClickListener((View view) ->
         {
             // Return chosen articles back to the selectable pool if necessary:
-            if (!chosenMeal.isEmpty())
+            if (chosenMeal != null)
             {
-                moveMealsToStateList(chosenMeal, selectableMeals);
+                selectableMeals.add(chosenMeal);
+                chosenMeal = null;
             }
 
             // Adjust mix buttons and ingredients list:

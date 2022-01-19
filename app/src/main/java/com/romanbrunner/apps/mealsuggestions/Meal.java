@@ -16,4 +16,5 @@ public interface Meal
     boolean isAvailable();
     void incrementMultiplier();
     void decrementSelectionsLeft();
+    void markAsEmpty();
 }
